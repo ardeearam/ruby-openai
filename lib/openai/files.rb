@@ -34,9 +34,11 @@ module OpenAI
 
     def validate(file:)
       File.open(file).each_line.with_index do |line, index|
-        JSON.parse(line)
-      rescue JSON::ParserError => e
-        raise JSON::ParserError, "#{e.message} - found on line #{index + 1} of #{file}"
+        begin
+          JSON.parse(line)
+        rescue JSON::ParserError => e
+          raise JSON::ParserError, "#{e.message} - found on line #{index + 1} of #{file}"
+        end
       end
     end
   end
